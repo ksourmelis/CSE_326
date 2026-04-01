@@ -1,4 +1,5 @@
 CREATE DATABASE pothen_esxes_db;
+
 USE pothen_esxes_db;
 
 CREATE TABLE users (
@@ -6,7 +7,7 @@ CREATE TABLE users (
     username VARCHAR(255) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
-    role ENUM('user','politician','admin') NOT NULL,
+    role ENUM('user', 'politician', 'admin') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -18,8 +19,7 @@ CREATE TABLE declarations (
     position VARCHAR(255) NOT NULL,
     properties TEXT,
     vehicles TEXT,
-    income DECIMAL(15,2),
+    income DECIMAL(15, 2),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
-
