@@ -2,28 +2,28 @@ INSERT INTO users (username, email, password_hash, role, created_at) VALUES
 (
   'nikos_christodoulides',
   'nikos@parliament.cy',
-  '$2y$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcg7b3XeKeUxWdeS86E36DH6IBi',
+  '$password1',
   'politician',
   NOW()
 ),
 (
   'anna_mavrides',
   'anna@parliament.cy',
-  '$2y$10$V4rMZCwIKWN9/wvp7fhVx.UDpZHVGMNlHHy2JjLFyJ2VqXH6/Ycri',
+  '$password2',
   'politician',
   NOW()
 ),
 (
   'george_papadopoulos',
   'george@parliament.cy',
-  '$2y$10$abcDefGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz',
+  '$password3',
   'politician',
   NOW()
 ),
 (
   'admin_user',
   'admin@parliament.cy',
-  '$2y$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcg7b3XeKeUxWdeS86E36DH6IBi',
+  '$password4',
   'admin',
   NOW()
 );
