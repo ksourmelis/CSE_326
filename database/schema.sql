@@ -17,8 +17,11 @@ CREATE TABLE declarations (
     declaration_year YEAR NOT NULL,
     party VARCHAR(255) NOT NULL,
     position VARCHAR(255) NOT NULL,
+    province VARCHAR(255) NOT NULL,
     properties TEXT,
     vehicles TEXT,
+    shares TEXT,
+    debts TEXT,
     income DECIMAL(15, 2),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
