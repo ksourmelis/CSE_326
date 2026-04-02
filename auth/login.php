@@ -21,7 +21,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([':email' => $email]);
         $user = $stmt->fetch();
 
-        if ($user && password_verify($password, $user['password_hash'])) {
+        $isValidLogin = false;
+
+        if ($user) {
+            $storedPassword = (string) ($user['password_hash'] ?? '');
+
+            if (password_verify($password, $storedPassword)) {
+                $isValidLogin = true;
+            } elseif ($storedPassword !== '' && hash_equals($storedPassword, $password)) {
+                $isValidLogin = true;
+
+                $newHash = password_hash($password, PASSWORD_DEFAULT);
+                $updateStmt = $pdo->prepare('UPDATE users SET password_hash = :password_hash WHERE id = :id');
+                $updateStmt->execute([
+                    ':password_hash' => $newHash,
+                    ':id' => $user['id'],
+                ]);
+            }
+        }
+
+        if ($isValidLogin) {
             session_regenerate_id(true);
 
             $_SESSION['user_id']  = $user['id'];
