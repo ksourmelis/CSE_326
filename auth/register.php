@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $old['email']    = htmlspecialchars($email);
     $old['role']     = $role;
 
-    // Validation — collect ALL errors before displaying
     if ($username === '') {
         $errors[] = 'Το όνομα χρήστη είναι υποχρεωτικό.';
     }
@@ -42,12 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'Οι κωδικοί δεν ταιριάζουν.';
     }
 
-    // Validate role server-side — never trust the client
     if (!in_array($role, $allowed_roles, true)) {
         $errors[] = 'Παρακαλώ επιλέξτε έγκυρο τύπο χρήστη.';
     }
 
-    // Check uniqueness only if email format is valid
     if (empty($errors)) {
         $stmt = $pdo->prepare('SELECT id FROM users WHERE email = :email');
         $stmt->execute([':email' => $email]);
@@ -56,7 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Insert if no errors
     if (empty($errors)) {
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $pdo->prepare(
@@ -120,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .btn {
             width: 100%;
             padding: 0.65rem;
-            background: #1a1a2e;
+            background: #b5b500;
             color: #fff;
             border: none;
             border-radius: 5px;
