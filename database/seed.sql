@@ -2,28 +2,21 @@ INSERT INTO users (username, email, password_hash, role, created_at) VALUES
 (
   'nikos_christodoulides',
   'nikos@parliament.cy',
-  '$password1',
+  '$2y$10$NdzrXQ3TtN08jHW3dxtndeSuLUM3NTQ9R21OvD.AW93GLgVC8GmZW',
   'politician',
   NOW()
 ),
 (
-  'anna_mavrides',
-  'anna@parliament.cy',
-  '$password2',
-  'politician',
-  NOW()
-),
-(
-  'george_papadopoulos',
-  'george@parliament.cy',
-  '$password3',
-  'politician',
+  'kleovoulos',
+  'kleovoulos@gmail.com',
+  '$2y$10$9ZP31/NJDB76SQX0SxNqOO3x3cO8Xu3J78fG5EyxL.CO0uCB0purq',
+  'citizen',
   NOW()
 ),
 (
   'admin_user',
-  'admin@parliament.cy',
-  '$password4',
+  'admin@admin.com',
+  '$2y$10$hM2qw6Q8zma7SV/nUMX2CeTkCF1XB.4wFn3k8QPIYQGXGkBMjMQIG',
   'admin',
   NOW()
 );
@@ -44,19 +37,39 @@ INSERT INTO declarations (
 ),
 
 (
-    2, 2024, 'AKEL (Progressive Party of Working People)', 'Member of Parliament', 'Larnaca',
-    'Apartment in Larnaca (€220,000), Land plot in Troodos (€40,000), Office space in city center (€95,000)',
-    'Volkswagen Golf 2019, Honda Civic 2020, Renault Clio 2023',
-    'Hellenic Bank shares (300 units), Alpha Bank shares (200 units)',
+    1, 2023, 'DISY (Democratic Rally)', 'President of Cyprus', 'Nicosia',
+    'House in Limassol (€350,000), Apartment in Larnaca seafront (€180,000)',
+    'Mercedes-Benz S-Class 2020',
+    'Bank of Cyprus shares (500 units), CYTA shares (1000 units)',
     15000.00,
-    135000.00
+    195000.00
 ),
 
 (
-    3, 2024, 'DEKO (Democratic Party)', 'Member of Parliament', 'Limassol',
-    'House in Limassol (€380,000), Apartment in Paphos (€160,000), Retail space in Paphos (€120,000)',
-    'Audi A4 2021, Hyundai i30 2017, Tesla Model 3 2024',
-    'CYTA shares (600 units), Marfin shares (150 units)',
-    45000.00,
-    110000.00
+  1, 2022, 'DISY (Democratic Rally)', 'President of Cyprus', 'Nicosia',
+  'House in Limassol (€300,000), Apartment in Larnaca seafront (€150,000)',
+  'Mercedes-Benz S-Class 2018',
+  'Bank of Cyprus shares (500 units), CYTA shares (1000 units)',
+  10000.00,
+  195000.00
+),
+
+(
+  1, 2021, 'DISY (Democratic Rally)', 'President of Cyprus', 'Nicosia',
+  'House in Limassol (€200,000), Apartment in Larnaca seafront (€100,000)',
+  'Mercedes-Benz S-Class 2010',
+  'Bank of Cyprus shares (400 units), CYTA shares (1000 units)',
+  9000.00,
+  195000.00
+),
+
+(
+
+  1, 2020, 'DISY (Democratic Rally)', 'President of Cyprus', 'Nicosia',
+  'House in Limassol (€150,000), Apartment in Larnaca seafront (€80,000)',
+  'Mercedes-Benz S-Class 2005',
+  'Bank of Cyprus shares (300 units), CYTA shares (1000 units)',
+  8000.00,
+  195000.00
+
 );
