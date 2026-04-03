@@ -1,3 +1,262 @@
-h3 {
-    color: blue;
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    color: #1f2937;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 240px;
+    background: #0f172a;
+    color: #cbd5e1;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem 0;
+}
+
+.side-header {
+    padding: 0 1.2rem 1rem;
+    border-bottom: 1px solid #1e293b;
+}
+
+.side-header h2 {
+    margin: 0;
+    color: #f8fafc;
+    font-size: 1.1rem;
+}
+
+.side-header p {
+    margin: 0.4rem 0 0;
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+
+.side-nav {
+    padding: 1rem 0;
+    display: grid;
+    gap: 0.25rem;
+}
+
+.side-link {
+    text-decoration: none;
+    color: #94a3b8;
+    padding: 0.75rem 1.2rem;
+    font-size: 0.92rem;
+    font-weight: 700;
+    border-left: 3px solid transparent;
+}
+
+.side-link:hover {
+    background: #1e293b;
+    color: #e2e8f0;
+}
+
+.side-link.active {
+    background: #1e293b;
+    color: #f3bf3a;
+    border-left-color: #f3bf3a;
+}
+
+.logout-link {
+    margin: auto 1.2rem 0;
+    text-decoration: none;
+    color: #f8fafc;
+    background: #334155;
+    text-align: center;
+    padding: 0.65rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.content {
+    flex: 1;
+    padding: 1.25rem;
+}
+
+.panel {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 3px 14px rgba(15, 23, 42, 0.08);
+    padding: 1.4rem;
+    margin-bottom: 1rem;
+}
+
+.panel h1,
+.panel h2,
+.panel h3 {
+    margin-top: 0;
+    color: #0f172a;
+}
+
+.panel p {
+    color: #475569;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1rem;
+    background: #f8fafc;
+}
+
+.card-link:hover {
+    border-color: #cbd5e1;
+    background: #f1f5f9;
+}
+
+.form-grid {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+}
+
+.field {
+    display: grid;
+    gap: 0.3rem;
+}
+
+.field.full {
+    grid-column: 1 / -1;
+}
+
+.field label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #334155;
+}
+
+.field input,
+.field textarea {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.94rem;
+}
+
+.field input[readonly] {
+    background: #f8fafc;
+}
+
+.btn {
+    width: fit-content;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    background: #0f172a;
+    color: #fff;
+    cursor: pointer;
+}
+
+.alert {
+    margin-top: 0.8rem;
+    padding: 0.7rem 0.9rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.alert.success {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.alert.error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+.submission-status-table {
+    min-width: 1650px;
+}
+
+.submission-status-table td,
+.submission-status-table th {
+    vertical-align: top;
+}
+
+.submission-status-table .text-cell {
+    min-width: 220px;
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.45;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.8rem;
+    font-size: 0.9rem;
+}
+
+th,
+td {
+    padding: 0.65rem 0.7rem;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+th {
+    background: #f8fafc;
+    color: #334155;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.status.ok {
+    display: inline-block;
+    background: #d1fae5;
+    color: #065f46;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+}
+
+.empty {
+    text-align: center;
+    color: #94a3b8;
+}
+
+@media (max-width: 900px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .side-nav {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .cards,
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
 }

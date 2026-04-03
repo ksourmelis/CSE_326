@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .btn {
             width: 100%;
             padding: 0.65rem;
-            background: #1a1a2e;
+            background: #b2c200;
             color: #fff;
             border: none;
             border-radius: 5px;
