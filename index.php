@@ -6,5 +6,5 @@ if (isset($_SESSION['user_id'])) {
     exit;
 }
 
-header('Location: /auth/login.php');
+header('Location: /modules/list.php');
 exit;
