@@ -1,8 +1,8 @@
 <?php
 
 define('DB_HOST', 'localhost');
-define('DB_USER', 'test_user');
-define('DB_PASSWORD', '1234');
+define('DB_USER', 'root');
+define('DB_PASSWORD', 'root123');
 define('DB_NAME', 'pothen_esxes_db');
 
 try {

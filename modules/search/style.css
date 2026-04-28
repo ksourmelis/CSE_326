@@ -275,3 +275,59 @@ th {
         grid-template-columns: 1fr;
     }
 }
+
+/* ── Layout overrides ── */
+body { display: flex; flex-direction: column; min-height: 100vh; }
+.layout { display: block !important; }
+.sidebar { display: none !important; }
+.content { padding: 0 !important; }
+
+/* ── Site header ── */
+.site-header { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 1rem 2rem; display: flex; align-items: center; justify-content: center; text-align: center; }
+.logo-title { font-size: 1.6rem; font-weight: 900; color: #0f172a; letter-spacing: 0.08em; }
+.logo-sub { font-size: 0.82rem; color: #64748b; margin-top: 0.2rem; }
+
+/* ── Main nav ── */
+.main-nav { background: #f3bf3a; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+.nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: stretch; }
+.main-nav a { display: flex; align-items: center; padding: 0.85rem 1.3rem; font-size: 0.9rem; font-weight: 700; color: #0f172a; text-decoration: none; white-space: nowrap; transition: background 0.15s; }
+.main-nav a:hover, .main-nav a.active { background: rgba(0,0,0,0.12); }
+.nav-right { margin-left: auto; display: flex; }
+.nav-right a { border-left: 1px solid rgba(0,0,0,0.12); }
+.nav-right a.btn-login { background: #0f172a; color: #f3bf3a; }
+.nav-right a.btn-login:hover { background: #1e293b; }
+.nav-right a.btn-register { background: #334155; color: #f8fafc; }
+.nav-right a.btn-register:hover { background: #475569; }
+.nav-right a.btn-logout { background: #7f1d1d; color: #fef2f2; }
+.nav-right a.btn-logout:hover { background: #991b1b; }
+
+/* ── Page title bar ── */
+.page-title-bar { background: #0f172a; padding: 1rem 1.5rem; border-bottom: 3px solid #f3bf3a; }
+.page-title-bar .ptb-inner { max-width: 1200px; margin: 0 auto; color: #f3bf3a; font-size: 1.1rem; font-weight: 800; letter-spacing: 0.06em; }
+
+/* ── Page wrap ── */
+.page-wrap { max-width: 1200px; width: 100%; margin: 2rem auto; padding: 0 1.25rem 2rem; flex: 1; }
+
+/* ── Panel table header override ── */
+.panel thead tr { background: #0f172a; }
+.panel thead th { color: #f3bf3a; }
+
+/* ── Password change form ── */
+.pw-form { display: grid; gap: 0.7rem; margin-top: 1rem; max-width: 520px; }
+.pw-form input { padding: 0.6rem 0.8rem; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.95rem; outline: none; }
+.pw-form input:focus { border-color: #f3bf3a; box-shadow: 0 0 0 3px rgba(243,191,58,0.2); }
+.pw-form button { padding: 0.65rem 1.4rem; background: #f3bf3a; color: #0f172a; border: none; border-radius: 8px; font-weight: 700; font-size: 0.95rem; cursor: pointer; width: fit-content; }
+.pw-form button:hover { background: #e0aa20; }
+.msg-ok { color: #166534; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 0.6rem 1rem; font-size: 0.9rem; margin-top: 0.8rem; }
+.msg-err { color: #b91c1c; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 0.6rem 1rem; font-size: 0.9rem; margin-top: 0.8rem; }
+
+/* ── Footer ── */
+.site-footer { background: #0f172a; color: #94a3b8; padding: 2.5rem 2rem 1.5rem; margin-top: 0; }
+.footer-inner { max-width: 1200px; margin: 0 auto; }
+.footer-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #f3bf3a; margin-bottom: 1rem; }
+.footer-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.5rem 2rem; margin-bottom: 2rem; }
+.footer-links a { color: #94a3b8; text-decoration: none; font-size: 0.85rem; }
+.footer-links a:hover { color: #f3bf3a; }
+.footer-bottom { border-top: 1px solid #1e293b; padding-top: 1rem; font-size: 0.78rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+.footer-bottom a { color: #94a3b8; text-decoration: none; }
+.footer-bottom a:hover { color: #f3bf3a; }
