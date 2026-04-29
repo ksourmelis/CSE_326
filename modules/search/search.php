@@ -89,7 +89,7 @@ if ($section === 'search') {
     if ($keyword !== '') {
         $kw = '%' . $keyword . '%';
         $stmt = $pdo->prepare(
-              "SELECT d.id, u.username, d.declaration_year, d.party, d.position, d.province, d.debts, d.income
+              "SELECT d.id, u.username, d.declaration_year, d.party, d.position, d.province, d.properties, d.vehicles, d.shares, d.debts, d.income, d.created_at
              FROM declarations d
              JOIN users u ON u.id = d.user_id
                WHERE u.role = 'politician'
@@ -102,7 +102,7 @@ if ($section === 'search') {
         $searchResults = $stmt->fetchAll();
     } else {
         $stmt = $pdo->prepare(
-            "SELECT d.id, u.username, d.declaration_year, d.party, d.position, d.province, d.debts, d.income
+            "SELECT d.id, u.username, d.declaration_year, d.party, d.position, d.province, d.properties, d.vehicles, d.shares, d.debts, d.income, d.created_at
              FROM declarations d
              JOIN users u ON u.id = d.user_id
                WHERE u.role = 'politician'
@@ -166,101 +166,124 @@ if ($section === 'statistics' || $section === 'dashboard') {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="el">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Module</title>
-    <link rel="stylesheet" href="<?= htmlspecialchars($cssHref, ENT_QUOTES, 'UTF-8') ?>">
+    <title>ΠΟΘΕΝ ΕΣΧΕΣ — <?php
+        $titles = ['dashboard' => 'Ταμπλό', 'search' => 'Αναζήτηση', 'statistics' => 'Στατιστικά', 'change-password' => 'Αλλαγή Κωδικού'];
+        echo htmlspecialchars($titles[$section] ?? 'Αναζήτηση', ENT_QUOTES, 'UTF-8');
+    ?></title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="layout">
-    <aside class="sidebar">
-        <div class="side-header">
-            <h2>Search Module</h2>
-            <p><?= htmlspecialchars($username, ENT_QUOTES, 'UTF-8') ?></p>
-        </div>
 
-        <nav class="side-nav">
-            <?php if ($isLoggedInCitizen): ?>
-                <a href="?section=dashboard" class="side-link <?= $section === 'dashboard' ? 'active' : '' ?>">Dashboard</a>
-            <?php endif; ?>
-            <a href="<?= htmlspecialchars($listPath, ENT_QUOTES, 'UTF-8') ?>" class="side-link">Search</a>
-            <a href="?section=statistics" class="side-link <?= $section === 'statistics' ? 'active' : '' ?>">Statistics</a>
-            <?php if ($isLoggedInCitizen): ?>
-                <a href="?section=change-password" class="side-link <?= $section === 'change-password' ? 'active' : '' ?>">Change Password</a>
-            <?php endif; ?>
-        </nav>
 
+<header class="site-header">
+    <div>
+        <div class="logo-title">ΠΟΘΕΝ ΕΣΧΕΣ</div>
+        <div class="logo-sub">Δηλώσεις Περιουσιακής &amp; Επαγγελματικής Κατάστασης</div>
+    </div>
+</header>
+
+<nav class="main-nav">
+    <div class="nav-inner">
+        <a href="<?= htmlspecialchars($listPath, ENT_QUOTES, 'UTF-8') ?>">Αρχική</a>
+        <a href="?section=search" class="<?= $section === 'search' ? 'active' : '' ?>">Αναζήτηση</a>
+        <a href="?section=statistics" class="<?= $section === 'statistics' ? 'active' : '' ?>">Στατιστικά</a>
         <?php if ($isLoggedInCitizen): ?>
-            <a class="logout-link" href="<?= htmlspecialchars($loginPath === '../auth/login.php' ? '../auth/logout.php' : '../../auth/logout.php', ENT_QUOTES, 'UTF-8') ?>">Logout</a>
-        <?php else: ?>
-            <a class="logout-link" href="<?= htmlspecialchars($loginPath, ENT_QUOTES, 'UTF-8') ?>">Login</a>
+            <a href="?section=dashboard" class="<?= $section === 'dashboard' ? 'active' : '' ?>">Ταμπλό</a>
+            <a href="?section=change-password" class="<?= $section === 'change-password' ? 'active' : '' ?>">Αλλαγή Κωδικού</a>
         <?php endif; ?>
-    </aside>
+        <div class="nav-right">
+            <?php if ($isLoggedInCitizen): ?>
+                <a href="<?= htmlspecialchars($loginPath === '../auth/login.php' ? '../auth/logout.php' : '../../auth/logout.php', ENT_QUOTES, 'UTF-8') ?>" class="btn-logout">Αποσύνδεση (<?= htmlspecialchars($username, ENT_QUOTES, 'UTF-8') ?>)</a>
+            <?php else: ?>
+                <a href="<?= htmlspecialchars(str_replace('login.php', 'register.php', $loginPath), ENT_QUOTES, 'UTF-8') ?>" class="btn-register">Εγγραφή</a>
+                <a href="<?= htmlspecialchars($loginPath, ENT_QUOTES, 'UTF-8') ?>" class="btn-login">Σύνδεση</a>
+            <?php endif; ?>
+        </div>
+    </div>
+</nav>
 
-    <main class="content">
+<div class="page-title-bar">
+    <div class="ptb-inner"><?php
+        $ptbTitles = ['dashboard' => 'Ταμπλό Πολίτη', 'search' => 'Αναζήτηση Δηλώσεων', 'statistics' => 'Στατιστικά', 'change-password' => 'Αλλαγή Κωδικού'];
+        echo htmlspecialchars($ptbTitles[$section] ?? 'Αναζήτηση', ENT_QUOTES, 'UTF-8');
+    ?></div>
+</div>
+
+<div class="page-wrap">
+
         <?php if ($section === 'dashboard'): ?>
             <section class="panel">
-                <h1>Citizen Dashboard</h1>
-                <p>This module gives public users access to search, registration and statistics.</p>
+                <h1>Ταμπλό Πολίτη</h1>
+                <p>Αυτή η ενότητα παρέχει στους χρήστες πρόσβαση σε αναζήτηση και στατιστικά.</p>
             </section>
 
-            <section class="panel stats-mini">
-                <div class="mini-card"><span><?= $stats['declarations_total'] ?></span><small>Total declarations</small></div>
-                <div class="mini-card"><span><?= $stats['politicians_total'] ?></span><small>Total politicians</small></div>
-                <div class="mini-card"><span><?= $stats['parties_total'] ?></span><small>Total parties</small></div>
-                <div class="mini-card"><span><?= number_format($stats['income_sum'], 2) ?></span><small>Total declared income</small></div>
+            <section class="stats-mini">
+                <div class="mini-card"><span><?= $stats['declarations_total'] ?></span><small>Συνολικές δηλώσεις</small></div>
+                <div class="mini-card"><span><?= $stats['politicians_total'] ?></span><small>Πολιτικοί</small></div>
+                <div class="mini-card"><span><?= $stats['parties_total'] ?></span><small>Κόμματα</small></div>
+                <div class="mini-card"><span><?= number_format($stats['income_sum'], 2) ?></span><small>Συνολικό δηλωθέν εισόδημα</small></div>
             </section>
 
         <?php elseif ($section === 'search'): ?>
             <section class="panel">
-                <h1>Seaaaaaaarch</h1>
-                <p>Search by politician name, party or debts text.</p>
+                <h1>Αναζήτηση</h1>
+                <p>Αναζητήστε βάσει ονόματος πολιτικού, κόμματος ή χρεών.</p>
 
                 <form class="search-form" method="GET" action="">
                     <input type="hidden" name="section" value="search">
                     <input
                         type="text"
                         name="keyword"
-                        placeholder="e.g. nikos, DISY, debt"
+                        placeholder="π.χ. Νίκος, ΔΗΣΥ, χρέη..."
                         value="<?= htmlspecialchars($keyword, ENT_QUOTES, 'UTF-8') ?>"
                     >
-                    <button type="submit">Search</button>
+                    <button type="submit">Αναζήτηση</button>
                 </form>
 
                 <p class="result-count">
-                    <?= count($searchResults) ?> result<?= count($searchResults) !== 1 ? 's' : '' ?>
-                    <?php if ($keyword !== ''): ?>for "<?= htmlspecialchars($keyword, ENT_QUOTES, 'UTF-8') ?>"<?php endif; ?>
+                    <?= count($searchResults) ?> αποτέλεσμα<?= count($searchResults) !== 1 ? 'τα' : '' ?>
+                    <?php if ($keyword !== ''): ?>για "<?= htmlspecialchars($keyword, ENT_QUOTES, 'UTF-8') ?>"<?php endif; ?>
                 </p>
 
                 <div class="table-wrap">
                     <table class="search-results-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Politician</th>
-                                <th>Year</th>
-                                <th>Party</th>
-                                <th>Position</th>
-                                <th>Province</th>
-                                <th>Income</th>
+                                <th>Πολιτικός</th>
+                                <th>Έτος</th>
+                                <th>Κόμμα</th>
+                                <th>Θέση</th>
+                                <th>Επαρχία</th>
+                                <th>Ακίνητα</th>
+                                <th>Οχήματα</th>
+                                <th>Μετοχές</th>
+                                <th>Χρέη</th>
+                                <th>Εισόδημα</th>
+                                <th>Ημ/νία Υποβολής</th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php foreach ($searchResults as $row): ?>
                             <tr>
-                                <td><?= (int) $row['id'] ?></td>
                                 <td><?= htmlspecialchars((string) $row['username'], ENT_QUOTES, 'UTF-8') ?></td>
                                 <td><?= htmlspecialchars((string) $row['declaration_year'], ENT_QUOTES, 'UTF-8') ?></td>
                                 <td><?= htmlspecialchars((string) $row['party'], ENT_QUOTES, 'UTF-8') ?></td>
                                 <td><?= htmlspecialchars((string) $row['position'], ENT_QUOTES, 'UTF-8') ?></td>
                                 <td><?= htmlspecialchars((string) $row['province'], ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars((string) ($row['properties'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars((string) ($row['vehicles'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars((string) ($row['shares'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars((string) ($row['debts'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
                                 <td><?= number_format((float) $row['income'], 2) ?></td>
+                                <td><?= htmlspecialchars((string) ($row['created_at'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
                             </tr>
                         <?php endforeach; ?>
                         <?php if (empty($searchResults)): ?>
-                            <tr><td colspan="7" class="empty">No matching records.</td></tr>
+                            <tr><td colspan="11" class="empty">Δεν βρέθηκαν εγγραφές.</td></tr>
                         <?php endif; ?>
                         </tbody>
                     </table>
@@ -268,75 +291,86 @@ if ($section === 'statistics' || $section === 'dashboard') {
             </section>
 
         <?php elseif ($section === 'statistics'): ?>
-            <section class="panel stats-mini">
-                <div class="mini-card"><span><?= $stats['declarations_total'] ?></span><small>Total declarations</small></div>
-                <div class="mini-card"><span><?= $stats['politicians_total'] ?></span><small>Total politicians</small></div>
-                <div class="mini-card"><span><?= $stats['entries_with_debts'] ?></span><small>Entries with debts info</small></div>
-                <div class="mini-card"><span><?= number_format($stats['income_sum'], 2) ?></span><small>Total declared income</small></div>
+            <section class="stats-mini">
+                <div class="mini-card"><span><?= $stats['declarations_total'] ?></span><small>Συνολικές δηλώσεις</small></div>
+                <div class="mini-card"><span><?= $stats['politicians_total'] ?></span><small>Πολιτικοί</small></div>
+                <div class="mini-card"><span><?= $stats['entries_with_debts'] ?></span><small>Εγγραφές με χρέη</small></div>
+                <div class="mini-card"><span><?= number_format($stats['income_sum'], 2) ?></span><small>Συνολικό δηλωθέν εισόδημα</small></div>
             </section>
 
             <section class="panel">
-                <h2>By Party</h2>
+                <h2>Ανά Κόμμα</h2>
                 <?php $maxParty = 1; foreach ($partyStats as $p) { if ((int) $p['declarations_count'] > $maxParty) { $maxParty = (int) $p['declarations_count']; } } ?>
                 <?php foreach ($partyStats as $p): ?>
                     <?php $w = ((int) $p['declarations_count'] / $maxParty) * 100; ?>
                     <div class="bar-item">
                         <div class="bar-label">
                             <span><?= htmlspecialchars((string) $p['party'], ENT_QUOTES, 'UTF-8') ?></span>
-                            <span><?= (int) $p['declarations_count'] ?> declarations</span>
+                            <span><?= (int) $p['declarations_count'] ?> δηλώσεις</span>
                         </div>
                         <div class="bar-track"><div class="bar-fill" style="width: <?= number_format($w, 2) ?>%"></div></div>
                     </div>
                 <?php endforeach; ?>
                 <?php if (empty($partyStats)): ?>
-                    <p class="empty-text">No statistics available yet.</p>
+                    <p class="empty-text">Δεν υπάρχουν διαθέσιμα στατιστικά.</p>
                 <?php endif; ?>
             </section>
 
             <section class="panel">
-                <h2>By Politician</h2>
+                <h2>Ανά Πολιτικό</h2>
                 <?php $maxPol = 1; foreach ($politicianStats as $p) { if ((int) $p['declarations_count'] > $maxPol) { $maxPol = (int) $p['declarations_count']; } } ?>
                 <?php foreach ($politicianStats as $p): ?>
                     <?php $w = ((int) $p['declarations_count'] / $maxPol) * 100; ?>
                     <div class="bar-item">
                         <div class="bar-label">
                             <span><?= htmlspecialchars((string) $p['username'], ENT_QUOTES, 'UTF-8') ?></span>
-                            <span><?= (int) $p['declarations_count'] ?> declarations</span>
+                            <span><?= (int) $p['declarations_count'] ?> δηλώσεις</span>
                         </div>
                         <div class="bar-track"><div class="bar-fill" style="width: <?= number_format($w, 2) ?>%"></div></div>
                     </div>
                 <?php endforeach; ?>
                 <?php if (empty($politicianStats)): ?>
-                    <p class="empty-text">No statistics available yet.</p>
+                    <p class="empty-text">Δεν υπάρχουν διαθέσιμα στατιστικά.</p>
                 <?php endif; ?>
             </section>
 
         <?php elseif ($section === 'change-password'): ?>
             <section class="panel">
-                <h1>Change Password</h1>
-                <p>Update your account password.</p>
+                <h1>Αλλαγή Κωδικού</h1>
+                <p>Ενημερώστε τον κωδικό του λογαριασμού σας.</p>
 
                 <?php if (!empty($passwordErrors)): ?>
-                    <div class="empty-text" style="margin-top: 0.8rem; color: #b91c1c;">
-                        <?= htmlspecialchars(implode(' ', $passwordErrors), ENT_QUOTES, 'UTF-8') ?>
-                    </div>
+                    <div class="msg-err"><?= htmlspecialchars(implode(' ', $passwordErrors), ENT_QUOTES, 'UTF-8') ?></div>
                 <?php endif; ?>
-
                 <?php if ($passwordSuccess !== ''): ?>
-                    <div class="empty-text" style="margin-top: 0.8rem; color: #166534;">
-                        <?= htmlspecialchars($passwordSuccess, ENT_QUOTES, 'UTF-8') ?>
-                    </div>
+                    <div class="msg-ok"><?= htmlspecialchars($passwordSuccess, ENT_QUOTES, 'UTF-8') ?></div>
                 <?php endif; ?>
 
-                <form class="search-form" method="POST" action="?section=change-password" style="margin-top: 1rem;">
-                    <input type="password" name="current_password" placeholder="Current password" required>
-                    <input type="password" name="new_password" placeholder="New password" required>
-                    <input type="password" name="confirm_password" placeholder="Confirm new password" required>
-                    <button type="submit">Update Password</button>
+                <form class="pw-form" method="POST" action="?section=change-password">
+                    <input type="password" name="current_password" placeholder="Τρέχων κωδικός" required>
+                    <input type="password" name="new_password" placeholder="Νέος κωδικός" required>
+                    <input type="password" name="confirm_password" placeholder="Επιβεβαίωση νέου κωδικού" required>
+                    <button type="submit">Ενημέρωση Κωδικού</button>
                 </form>
             </section>
         <?php endif; ?>
-    </main>
+
 </div>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-title">Σύνδεσμοι</div>
+        <div class="footer-links">
+            <a href="<?= htmlspecialchars($listPath, ENT_QUOTES, 'UTF-8') ?>">Αρχική</a>
+            <a href="?section=search">Αναζήτηση</a>
+            <a href="?section=statistics">Στατιστικά</a>
+            <a href="<?= htmlspecialchars($loginPath, ENT_QUOTES, 'UTF-8') ?>">Σύνδεση</a>
+        </div>
+        <div class="footer-bottom">
+            <span>Σύστημα ΠΟΘΕΝ ΕΣΧΕΣ &copy; <?= date('Y') ?></span>
+        </div>
+    </div>
+</footer>
+
 </body>
 </html>
